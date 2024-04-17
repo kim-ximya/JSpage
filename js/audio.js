@@ -58,7 +58,7 @@ function chooseMusic(event) {
     videoId = "uDqvO3Lb_As";
     changeVideo(videoId);
   } else if (musicNum === "2") {
-    videoId = "IgQEefhmPXI";
+    videoId = "6tI-0LBamGg";
     changeVideo(videoId);
   } else if (musicNum === "3") {
     videoId = "qIz-9CHVQUc";

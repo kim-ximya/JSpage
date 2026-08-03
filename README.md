@@ -14,4 +14,4 @@ Windows 98 스타일의 개인용 바탕화면 웹 페이지입니다. HTML, CSS
 
 `index.html`을 브라우저에서 열거나 정적 파일 서버로 실행합니다. 위치 기반 날씨를 사용하려면 브라우저의 위치 권한이 필요하며, `localhost` 또는 HTTPS 환경을 권장합니다.
 
-날씨는 API 키가 필요 없는 [Open-Meteo](https://open-meteo.com/)를 사용합니다. 바로가기, 아이콘 정렬, 창 상태와 할 일은 브라우저의 `localStorage`에 저장됩니다.
+날씨는 API 키가 필요 없는 [Open-Meteo](https://open-meteo.com/)를 사용하며, 위치 이름은 [BigDataCloud](https://www.bigdatacloud.com/)에서 가져옵니다. 바로가기, 아이콘 정렬, 창 상태와 할 일은 브라우저의 `localStorage`에 저장됩니다.

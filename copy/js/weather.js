@@ -35,14 +35,56 @@ function getWeatherDescription(code) {
   return descriptions[code] ?? "날씨 정보 없음";
 }
 
+function formatCoordinates(latitude, longitude) {
+  return `${latitude.toFixed(2)}, ${longitude.toFixed(2)}`;
+}
+
+async function getLocationName(latitude, longitude) {
+  const url = new URL(
+    "https://api.bigdatacloud.net/data/reverse-geocode-client"
+  );
+  url.search = new URLSearchParams({
+    latitude: String(latitude),
+    longitude: String(longitude),
+    localityLanguage: navigator.language?.split("-")[0] ?? "ko",
+  }).toString();
+
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`Location request failed: ${response.status}`);
+  }
+
+  const data = await response.json();
+  const place = data.city || data.locality;
+  const region = data.principalSubdivision;
+  const locationParts = [place, region].filter(
+    (part, index, parts) => part && parts.indexOf(part) === index
+  );
+
+  if (locationParts.length === 0) {
+    throw new Error("Location response is incomplete.");
+  }
+
+  return locationParts.join(", ");
+}
+
 async function onGeoOk(position) {
+  const latitude = position.coords.latitude;
+  const longitude = position.coords.longitude;
   const url = new URL("https://api.open-meteo.com/v1/forecast");
   url.search = new URLSearchParams({
-    latitude: String(position.coords.latitude),
-    longitude: String(position.coords.longitude),
+    latitude: String(latitude),
+    longitude: String(longitude),
     current: "temperature_2m,weather_code",
     timezone: "auto",
   }).toString();
+
+  const locationNamePromise = getLocationName(latitude, longitude).catch(
+    (error) => {
+      console.error(error);
+      return formatCoordinates(latitude, longitude);
+    }
+  );
 
   try {
     const response = await fetch(url);
@@ -60,7 +102,8 @@ async function onGeoOk(position) {
 
     const unit = data.current_units?.temperature_2m ?? "°C";
     const description = getWeatherDescription(weatherCode);
-    weatherText.innerText = `#현재 위치 #${description} #${Math.round(temperature)}${unit}`;
+    const locationName = await locationNamePromise;
+    weatherText.innerText = `#${locationName} #${description} #${Math.round(temperature)}${unit}`;
   } catch (error) {
     console.error(error);
     weatherText.innerText = "#날씨 정보를 불러올 수 없음";

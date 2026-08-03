@@ -27,7 +27,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  z-index: -1;
+  z-index: 2;
   position: relative;
   position: absolute;
   top: 100px;
@@ -35,17 +35,23 @@ body {
   height: 500px;
   padding: 5px;
 }
-#picture-screen {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: absolute;
-  right: -350px;
-  bottom: -100px;
-  z-index: 1;
-  width: 400px;
-  height: 480px;
-  padding: 5px;
+
+#window-screen.hidden {
+  display: none;
+}
+
+#notepad-title-bar {
+  cursor: move;
+  touch-action: none;
+  user-select: none;
+}
+
+#notepad-title-bar .title-bar-controls {
+  cursor: default;
+}
+
+#window-screen.is-dragging {
+  opacity: 0.96;
 }
 
 .detail-wrapper {
@@ -56,25 +62,6 @@ body {
   box-sizing: border-box;
   width: 480px;
   height: 476px;
-  bottom: 5px;
-  background-color: white;
-  box-shadow: inset -1px -1px #dfdfdf, inset 1px 1px grey, inset -2px -2px #fff,
-    inset 2px 2px#0a0a0a;
-}
-
-#picture-screen .title-bar {
-  width: 393px;
-  position: absolute;
-}
-#picture-screen .detail-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: absolute;
-  box-sizing: border-box;
-  overflow-y: auto;
-  width: 400px;
-  height: 456px;
   bottom: 5px;
   background-color: white;
   box-shadow: inset -1px -1px #dfdfdf, inset 1px 1px grey, inset -2px -2px #fff,
@@ -112,10 +99,6 @@ body {
   width: 70px;
 
   padding-top: 15px;
-  
-  a{
-    text-decoration: none;
-  }
   
 }
 

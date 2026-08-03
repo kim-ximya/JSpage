@@ -13,39 +13,162 @@
     <link rel="stylesheet" href="css/start-bar.css" />
     <link rel="stylesheet" href="css/login-part.css" />
     <link rel="stylesheet" href="css/todo-part.css" />
-    <link rel="stylesheet" href="css/quotes-part.css" />
-    <link rel="stylesheet" href="css/image-viewer.css" />
-    <link rel="stylesheet" href="css/audio.css" />
+    <link rel="stylesheet" href="css/desktop-icons.css" />
     <title>陽気な一日</title>
   </head>
   <body>
     <main class="wrapper">
       
       <div class="icon-base">
-        <a id="linked-gmail" href="https://mail.google.com/mail/u/0/#inbox" target="_blank">
-          <div class ="bg-icon">
-            <img src="css/icon/outlook_express-2.png"/>
-            <p class="bg-icon_font">Take the</p>
-            <p class="bg-icon_font">Link List</p>
-          </div>
-        </a>
-        <a id="linked-github" href="https://github.com/" target="_blank">
-          <div class ="bg-icon">
-            <img src="css/icon/computer_explorer_cool-0.png"/>
-            <p class="bg-icon_font">GitHub</p>
-          </div>
-        </a>
+        <button
+          id="add-shortcut"
+          class="desktop-icon-button desktop-icon-item"
+          type="button"
+          draggable="true"
+          data-icon-id="add-shortcut"
+          aria-haspopup="dialog"
+          aria-controls="shortcut-dialog"
+        >
+          <span class="desktop-icon-image">
+            <img src="css/icon/desktop-3.png" alt="" />
+            <span class="desktop-icon-plus" aria-hidden="true">+</span>
+          </span>
+          <span class="bg-icon_font">Add Shortcut</span>
+        </button>
+        <button
+          id="open-notepad"
+          class="desktop-icon-button desktop-icon-item"
+          type="button"
+          draggable="true"
+          data-icon-id="notepad"
+          aria-controls="window-screen"
+          aria-expanded="false"
+        >
+          <span class="desktop-icon-image">
+            <img src="css/icon/notepad-5.png" alt="" />
+          </span>
+          <span class="bg-icon_font">Notepad</span>
+        </button>
       </div>
-      <div id="window-screen" class="window">
+      <section
+        id="shortcut-dialog"
+        class="window shortcut-dialog hidden"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="shortcut-dialog-title"
+      >
         <div class="title-bar">
+          <div id="shortcut-dialog-title" class="title-bar-text">
+            Add Desktop Shortcut
+          </div>
+          <div class="title-bar-controls">
+            <button
+              id="close-shortcut-dialog"
+              type="button"
+              aria-label="Close"
+            ></button>
+          </div>
+        </div>
+        <div class="window-body">
+          <form id="shortcut-form">
+            <div class="field-row-stacked">
+              <label for="shortcut-name">Shortcut name</label>
+              <input
+                id="shortcut-name"
+                name="shortcutName"
+                type="text"
+                maxlength="24"
+                autocomplete="off"
+                required
+              />
+            </div>
+            <div class="field-row-stacked">
+              <label for="shortcut-url">Destination URL</label>
+              <input
+                id="shortcut-url"
+                name="shortcutUrl"
+                type="text"
+                inputmode="url"
+                placeholder="https://example.com"
+                autocomplete="url"
+                required
+              />
+            </div>
+            <div class="field-row-stacked">
+              <label for="shortcut-icon">Icon image (optional)</label>
+              <input
+                id="shortcut-icon"
+                name="shortcutIcon"
+                type="file"
+                accept="image/png,image/jpeg,image/webp,image/gif"
+              />
+              <div class="shortcut-icon-preview-row">
+                <button
+                  id="open-project-icon-picker"
+                  class="shortcut-icon-preview-button"
+                  type="button"
+                  aria-label="Choose an icon from the project"
+                  aria-controls="project-icon-picker"
+                  aria-expanded="false"
+                  title="Choose a project icon"
+                >
+                  <img
+                    id="shortcut-icon-preview"
+                    src="css/icon/msie1-2.png"
+                    alt="Selected icon preview"
+                  />
+                </button>
+                <p>
+                  Click the preview to choose a project icon.<br />
+                  If no icon is selected, the website icon is used first.<br />
+                  Recommended: <strong>35 × 35 px</strong>, square PNG, JPG,
+                  WebP, or GIF. Larger images are automatically resized.
+                </p>
+              </div>
+              <div
+                id="project-icon-picker"
+                class="project-icon-picker hidden"
+                role="group"
+                aria-label="Project icons"
+              ></div>
+              <button
+                id="use-automatic-icon"
+                class="automatic-icon-button"
+                type="button"
+                aria-pressed="true"
+              >
+                Use website icon automatically
+              </button>
+              <p
+                id="shortcut-icon-status"
+                class="shortcut-icon-status"
+                aria-live="polite"
+              ></p>
+            </div>
+            <p id="shortcut-error" class="shortcut-error hidden" role="alert"></p>
+            <p class="shortcut-help">Saved shortcuts can be edited or removed from the desktop icon.</p>
+            <div class="shortcut-actions">
+              <button id="submit-shortcut" type="submit">Add</button>
+              <button id="cancel-shortcut" type="button">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </section>
+      <div
+        id="window-screen"
+        class="window hidden"
+        tabindex="-1"
+        aria-hidden="true"
+      >
+        <div id="notepad-title-bar" class="title-bar">
           <div class="title-bar-text">
             <img src="css/icon/notepad-5.png" />
             <span>Notepad</span>
           </div>
           <div class="title-bar-controls">
-            <button aria-label="Minimize"></button>
+            <button id="minimize-notepad" aria-label="Minimize"></button>
             <button aria-label="Maximize"></button>
-            <button aria-label="Close"></button>
+            <button id="close-notepad" aria-label="Close"></button>
           </div>
         </div>
         <div class="detail-wrapper">
@@ -80,48 +203,56 @@
           </div>
           <button id="clear-button" class="hidden">Clear</button>
         </div>
-        <div id="picture-screen" class="window">
-          <div class="title-bar">
-            <div class="title-bar-text">
-              <img src="css/icon/msagent-4.png" />
-              <span>Mood Maker</span>
-            </div>
-            <div class="title-bar-controls">
-              <button aria-label="Minimize"></button>
-              <button aria-label="Maximize"></button>
-              <button aria-label="Close"></button>
-            </div>
-          </div>
-          <div class="detail-wrapper">
-            <div class="image-viewer">
-              <img id="new-image" />
-            </div>
-            <div id="quotes">
-              <span></span>
-              <span></span>
-            </div>
-            <div id="audio-wrapper">
-              <div id="audio-change">
-                <button data-music="1">1</button>
-                <button data-music="2">2</button>
-                <button data-music="3">3</button>
-                <button data-music="4">4</button>
-                <button data-music="5">5</button>
-              </div>
-              <div id="player"></div>
-              <div id="audio-controller">
-                <button id="play">PLAY</button>
-                <button id="pause">PAUSE</button>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </main>
     <footer>
-      <div id="start-menu"></div>
+      <nav
+        id="start-menu"
+        class="window"
+        aria-label="Start menu"
+        aria-hidden="true"
+      >
+        <div class="start-menu-brand" aria-hidden="true">
+          <strong>Windows</strong><span>98</span>
+        </div>
+        <div class="start-menu-items" role="menu">
+          <button
+            id="random-wallpaper-toggle"
+            class="start-menu-item"
+            type="button"
+            role="menuitemcheckbox"
+            aria-checked="false"
+          >
+            <img src="css/icon/desktop-3.png" alt="" />
+            <span class="start-menu-copy">
+              <strong>Random Wallpaper</strong>
+              <small>Choose a new background on each visit</small>
+            </span>
+            <span id="random-wallpaper-state" class="start-menu-state">Off</span>
+          </button>
+          <div class="start-menu-separator" role="separator"></div>
+          <button
+            id="change-wallpaper"
+            class="start-menu-item"
+            type="button"
+            role="menuitem"
+            disabled
+          >
+            <img src="css/icon/camera-0.png" alt="" />
+            <span class="start-menu-copy">
+              <strong>Change Wallpaper</strong>
+              <small>Pick another background now</small>
+            </span>
+          </button>
+        </div>
+      </nav>
       <div id="start-bar" class="window">
-        <button>
+        <button
+          id="start-button"
+          type="button"
+          aria-controls="start-menu"
+          aria-expanded="false"
+        >
           <img src="css/icon/windows-0.png" />
           <span>Start</span>
         </button>
@@ -147,17 +278,12 @@
     </footer>
     <script src="js/greetings.js"></script>
     <script src="js/clock.js"></script>
-    <script src="js/quotes.js"></script>
     <script src="js/todo.js"></script>
     <script src="js/background.js"></script>
-    <script src="js/image-viewer.js"></script>
     <script src="js/weather.js"></script>
-    <script src="js/start-menu_anime.js"></script>
-    <script src="js/audio.js"></script>
-    <script
-      src="https://kit.fontawesome.com/19f5397276.js"
-      crossorigin="anonymous"
-    ></script>
-    <script src="js/bg-icons.js"></script>
+    <script src="js/start-menu.js"></script>
+    <script src="js/window-controls.js"></script>
+    <script src="js/desktop-icons.js"></script>
+    <script src="js/icon-order.js"></script>
   </body>
 </html>

@@ -1,24 +1,115 @@
-/*
-const background = document.querySelector("body");
-const backgroundShadow1 = document.querySelector(".big-box");
-const backgroundShadow2 = document.querySelector(".wrapped-box");
-const color = [
-  "#7e14cf",
-  "#2415cc",
-  "#ff2d7e",
-  "#0daeb1",
-  "#e24597",
-  "#48aeff",
+const desktopBackground = document.body;
+
+const RANDOM_WALLPAPER_STORAGE_KEY = "randomWallpaperEnabled";
+const LAST_WALLPAPER_STORAGE_KEY = "lastRandomWallpaper";
+const DEFAULT_WALLPAPER = "css/backgroundImage/bg3.jpg";
+const WALLPAPERS = [
+  "css/backgroundImage/bg1.jpg",
+  "css/backgroundImage/bg2.jpg",
+  "css/backgroundImage/bg3.jpg",
+  "css/backgroundImage/bg4.jpg",
+  "css/backgroundImage/bg5.jpg",
 ];
-let selectColor1, selectColor2;
 
-do {
-  selectColor1 = color[Math.floor(Math.random() * color.length)];
-  selectColor2 = color[Math.floor(Math.random() * color.length)];
-  selectColor3 = color[Math.floor(Math.random() * color.length)];
-} while (selectColor1 === selectColor2);
+let randomWallpaperEnabled = loadRandomWallpaperSetting();
+let currentWallpaper = DEFAULT_WALLPAPER;
 
-background.style.background = `linear-gradient(to top, ${selectColor1}, ${selectColor2})`;
-backgroundShadow1.style.boxShadow = `1px 1px 50px ${selectColor3}`;
-backgroundShadow2.style.boxShadow = `1px 1px 50px ${selectColor3}`;
-*/
+function loadRandomWallpaperSetting() {
+  try {
+    return localStorage.getItem(RANDOM_WALLPAPER_STORAGE_KEY) === "true";
+  } catch (error) {
+    return false;
+  }
+}
+
+function loadLastWallpaper() {
+  try {
+    const lastWallpaper = localStorage.getItem(LAST_WALLPAPER_STORAGE_KEY);
+    return WALLPAPERS.includes(lastWallpaper) ? lastWallpaper : null;
+  } catch (error) {
+    return null;
+  }
+}
+
+function saveWallpaperSetting() {
+  try {
+    localStorage.setItem(
+      RANDOM_WALLPAPER_STORAGE_KEY,
+      String(randomWallpaperEnabled)
+    );
+    localStorage.setItem(LAST_WALLPAPER_STORAGE_KEY, currentWallpaper);
+  } catch (error) {
+    // Random wallpaper still works for the current page when storage is blocked.
+  }
+}
+
+function chooseRandomWallpaper() {
+  const previousWallpaper = loadLastWallpaper() || currentWallpaper;
+  const availableWallpapers = WALLPAPERS.filter(
+    (wallpaper) => wallpaper !== previousWallpaper
+  );
+  const wallpaperPool =
+    availableWallpapers.length > 0 ? availableWallpapers : WALLPAPERS;
+
+  return wallpaperPool[Math.floor(Math.random() * wallpaperPool.length)];
+}
+
+function applyWallpaper(wallpaper) {
+  currentWallpaper = wallpaper;
+
+  if (wallpaper === DEFAULT_WALLPAPER && !randomWallpaperEnabled) {
+    desktopBackground.style.backgroundImage = "";
+  } else {
+    desktopBackground.style.backgroundImage = `url("${wallpaper}")`;
+  }
+}
+
+function notifyWallpaperChange() {
+  document.dispatchEvent(
+    new CustomEvent("wallpaper:change", {
+      detail: window.wallpaperController.getState(),
+    })
+  );
+}
+
+function setRandomWallpaperEnabled(enabled) {
+  randomWallpaperEnabled = Boolean(enabled);
+
+  if (randomWallpaperEnabled) {
+    applyWallpaper(chooseRandomWallpaper());
+  } else {
+    applyWallpaper(DEFAULT_WALLPAPER);
+  }
+
+  saveWallpaperSetting();
+  notifyWallpaperChange();
+}
+
+function changeRandomWallpaper() {
+  if (!randomWallpaperEnabled) {
+    return;
+  }
+
+  applyWallpaper(chooseRandomWallpaper());
+  saveWallpaperSetting();
+  notifyWallpaperChange();
+}
+
+window.wallpaperController = {
+  getState() {
+    return {
+      enabled: randomWallpaperEnabled,
+      wallpaper: currentWallpaper,
+    };
+  },
+  setEnabled: setRandomWallpaperEnabled,
+  toggle() {
+    setRandomWallpaperEnabled(!randomWallpaperEnabled);
+  },
+  change: changeRandomWallpaper,
+};
+
+if (randomWallpaperEnabled) {
+  applyWallpaper(chooseRandomWallpaper());
+  saveWallpaperSetting();
+}

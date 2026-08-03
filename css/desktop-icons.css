@@ -1,0 +1,274 @@
+.desktop-shortcut-item > a {
+  text-decoration: none;
+}
+
+.desktop-icon-item[draggable="true"] {
+  cursor: grab;
+}
+
+.desktop-icon-item.dragging {
+  opacity: 0.45;
+  cursor: grabbing;
+}
+
+.desktop-icon-item.drop-target {
+  outline: 1px dotted white;
+  background-color: rgba(0, 0, 128, 0.35);
+}
+
+.desktop-icon-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 70px;
+  min-width: 70px;
+  margin: 0 0 20px;
+  padding: 0;
+  color: white;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.desktop-icon-button:not(:disabled):active,
+.desktop-icon-button:focus {
+  padding: 0;
+  box-shadow: none;
+  outline: 1px dotted white;
+}
+
+.desktop-icon-image {
+  position: relative;
+  display: block;
+  width: 35px;
+  height: 35px;
+}
+
+.desktop-icon-image img {
+  width: 35px;
+  height: 35px;
+}
+
+.desktop-icon-plus {
+  position: absolute;
+  right: -4px;
+  bottom: -3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  color: black;
+  background: #c0c0c0;
+  border: 1px solid white;
+  box-shadow: 1px 1px #000;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.desktop-icon-button .bg-icon_font {
+  margin-top: 3px;
+  text-align: center;
+  line-height: 1.15;
+}
+
+.desktop-shortcut-item {
+  position: relative;
+  width: 70px;
+}
+
+.desktop-shortcut-item .bg-icon {
+  width: 70px;
+}
+
+.desktop-shortcut-item .bg-icon_font {
+  max-width: 68px;
+  overflow-wrap: anywhere;
+  text-align: center;
+  line-height: 1.15;
+}
+
+.shortcut-edit,
+.shortcut-delete {
+  position: absolute;
+  left: 64px;
+  z-index: 2;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  min-width: 18px;
+  height: 18px;
+  min-height: 18px;
+  padding: 0;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.shortcut-edit {
+  top: 0;
+}
+
+.shortcut-delete {
+  top: 21px;
+}
+
+.desktop-shortcut-item:hover .shortcut-edit,
+.desktop-shortcut-item:hover .shortcut-delete,
+.desktop-shortcut-item:focus-within .shortcut-edit,
+.desktop-shortcut-item:focus-within .shortcut-delete {
+  display: flex;
+}
+
+.shortcut-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 20;
+  width: 340px;
+  transform: translate(-50%, -50%);
+}
+
+.shortcut-dialog.hidden {
+  display: none;
+}
+
+.shortcut-dialog .title-bar {
+  position: static;
+  width: auto;
+}
+
+.shortcut-dialog .window-body {
+  margin: 12px;
+}
+
+.shortcut-dialog .field-row-stacked {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+}
+
+.shortcut-dialog label {
+  margin-bottom: 4px;
+}
+
+.shortcut-dialog input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.shortcut-dialog input[type="file"] {
+  padding: 3px;
+}
+
+.shortcut-icon-preview-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.shortcut-icon-preview-button {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 45px;
+  min-width: 45px;
+  height: 45px;
+  min-height: 45px;
+  padding: 4px;
+  cursor: pointer;
+}
+
+#shortcut-icon-preview {
+  width: 35px;
+  height: 35px;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.shortcut-icon-preview-row p {
+  margin: 0;
+  line-height: 1.3;
+}
+
+.project-icon-picker {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 5px;
+  max-height: 132px;
+  margin-top: 8px;
+  padding: 7px;
+  overflow-y: auto;
+  background: white;
+  box-shadow: inset -1px -1px #fff, inset 1px 1px #0a0a0a,
+    inset -2px -2px #dfdfdf, inset 2px 2px grey;
+}
+
+.project-icon-picker.hidden {
+  display: none;
+}
+
+.project-icon-option {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  min-width: 40px;
+  height: 40px;
+  min-height: 40px;
+  padding: 3px;
+}
+
+.project-icon-option[aria-pressed="true"] {
+  outline: 1px dotted #000;
+  background: #dfdfdf;
+}
+
+.project-icon-option img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.automatic-icon-button {
+  align-self: flex-start;
+  width: auto;
+  margin-top: 7px;
+}
+
+.automatic-icon-button[aria-pressed="true"] {
+  font-weight: bold;
+}
+
+.shortcut-icon-status {
+  min-height: 14px;
+  margin: 5px 0 0;
+  color: #444;
+}
+
+.shortcut-error {
+  margin: 0 0 10px;
+  color: #b00020;
+}
+
+.shortcut-help {
+  margin: 0 0 12px;
+  color: #444;
+}
+
+.shortcut-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+@media (max-width: 720px) {
+  .shortcut-dialog {
+    width: calc(100% - 32px);
+  }
+}
